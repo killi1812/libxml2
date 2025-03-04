@@ -28,34 +28,33 @@ const ValueVCCreate = 1
 // when you are done with it.
 // ==IMPORTANT== still in development
 // TODO: finish transfering to relaxNG
-func Parse(buf []byte, options ...Option) (*RelaxNGSchema, error) {
-	// xsd.WithURI(...)
+func Parse(buf []byte, options ...types.Option) (types.Schema, error) {
 	sptr, err := clib.XMLSchemaParse(buf, options...)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to parse input")
 	}
 
-	return &RelaxNGSchema{ptr: sptr}, nil
+	return &relaxNGSchema{ptr: sptr}, nil
 }
 
 // ParseFromFile is used to parse an XML schema using only the file path.
 // Make sure to call Free() on the instance when you are done with it.
-func ParseFromFile(path string) (*RelaxNGSchema, error) {
+func ParseFromFile(path string) (types.Schema, error) {
 	sptr, err := clib.XMLRelaxNGSchemaParseFromFile(path)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to parse input from file")
 	}
 
-	return &RelaxNGSchema{ptr: sptr}, nil
+	return &relaxNGSchema{ptr: sptr}, nil
 }
 
 // Pointer returns the underlying C struct
-func (s *RelaxNGSchema) Pointer() uintptr {
+func (s *relaxNGSchema) Pointer() uintptr {
 	return s.ptr
 }
 
 // Free frees the underlying C struct
-func (s *RelaxNGSchema) Free() {
+func (s *relaxNGSchema) Free() {
 	if err := clib.XMLRelaxNGFree(s); err != nil {
 		return
 	}
@@ -65,21 +64,11 @@ func (s *RelaxNGSchema) Free() {
 // Validate takes in a XML document and validates it against
 // the schema. If there are any problems, and error is
 // returned.
-func (s *RelaxNGSchema) Validate(d types.Document, options ...int) error {
+func (s *relaxNGSchema) Validate(d types.Document, options ...int) error {
 	errs := clib.XMLRelaxNGValidateDocument(s, d, options...)
 	if errs == nil {
 		return nil
 	}
 
-	return SchemaValidationError{errors: errs}
-}
-
-// Error method fulfils the error interface
-func (sve SchemaValidationError) Error() string {
-	return "schema validation failed"
-}
-
-// Errors returns the list of errors found
-func (sve SchemaValidationError) Errors() []error {
-	return sve.errors
+	return types.SchemaValidationError{Errors: errs}
 }

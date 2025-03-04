@@ -1,6 +1,9 @@
 package types
 
-import "github.com/killi1812/libxml2/clib"
+import (
+	"github.com/killi1812/libxml2/clib"
+	"github.com/killi1812/libxml2/internal/option"
+)
 
 // PtrSource defines the interface for things that is backed by
 // a C backend
@@ -121,3 +124,23 @@ type NodeIter interface {
 
 // NodeList is a set of Nodes
 type NodeList []Node
+
+// Schema is a common interface for validations schemas (xsd and rng)
+type Schema interface {
+	Validate(d Document, options ...int) error
+	Free()
+}
+
+// SchemaValidationError is returned when the Validate() function
+// finds errors. When there are multiple errors, you may access
+// them using the Errors() method
+type SchemaValidationError struct {
+	Errors []error
+}
+
+// Error method fulfils the error interface
+func (sve SchemaValidationError) Error() string {
+	return "schema validation failed"
+}
+
+type Option = option.Interface

@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 
 	"github.com/killi1812/libxml2/internal/option"
+	"github.com/killi1812/libxml2/types"
 )
 
 // WithPath provides a hint to the XSD parser as to where the
@@ -21,7 +22,7 @@ import (
 // If the path is provided as a relative path, the current directory
 // should be obtainable via `os.Getwd` when this call is made, otherwise
 // path resolution may fail in weird ways.
-func WithPath(path string) Option {
+func WithPath(path string) types.Option {
 	if !filepath.IsAbs(path) {
 		if curdir, err := os.Getwd(); err == nil {
 			path = filepath.Join(curdir, path)
@@ -36,6 +37,6 @@ func WithPath(path string) Option {
 	)
 }
 
-func WithURI(v string) Option {
+func WithURI(v string) types.Option {
 	return option.New(option.OptKeyWithURI, v)
 }

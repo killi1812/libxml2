@@ -23,38 +23,43 @@ import (
 
 const ValueVCCreate = 1
 
+// schema represents an XML schema.
+type schema struct {
+	ptr uintptr // *C.xmlSchema
+}
+
 // Parse is used to parse an XML Schema Document to produce a
 // Schema instance. Make sure to call Free() on the instance
 // when you are done with it.
 
-func Parse(buf []byte, options ...Option) (*Schema, error) {
+func Parse(buf []byte, options ...types.Option) (types.Schema, error) {
 	// xsd.WithURI(...)
 	sptr, err := clib.XMLSchemaParse(buf, options...)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to parse input")
 	}
 
-	return &Schema{ptr: sptr}, nil
+	return &schema{ptr: sptr}, nil
 }
 
 // ParseFromFile is used to parse an XML schema using only the file path.
 // Make sure to call Free() on the instance when you are done with it.
-func ParseFromFile(path string) (*Schema, error) {
+func ParseFromFile(path string) (types.Schema, error) {
 	sptr, err := clib.XMLSchemaParseFromFile(path)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to parse input from file")
 	}
 
-	return &Schema{ptr: sptr}, nil
+	return &schema{ptr: sptr}, nil
 }
 
 // Pointer returns the underlying C struct
-func (s *Schema) Pointer() uintptr {
+func (s *schema) Pointer() uintptr {
 	return s.ptr
 }
 
 // Free frees the underlying C struct
-func (s *Schema) Free() {
+func (s *schema) Free() {
 	if err := clib.XMLSchemaFree(s); err != nil {
 		return
 	}
@@ -64,21 +69,11 @@ func (s *Schema) Free() {
 // Validate takes in a XML document and validates it against
 // the schema. If there are any problems, and error is
 // returned.
-func (s *Schema) Validate(d types.Document, options ...int) error {
+func (s *schema) Validate(d types.Document, options ...int) error {
 	errs := clib.XMLSchemaValidateDocument(s, d, options...)
 	if errs == nil {
 		return nil
 	}
 
-	return SchemaValidationError{errors: errs}
-}
-
-// Error method fulfils the error interface
-func (sve SchemaValidationError) Error() string {
-	return "schema validation failed"
-}
-
-// Errors returns the list of errors found
-func (sve SchemaValidationError) Errors() []error {
-	return sve.errors
+	return types.SchemaValidationError{Errors: errs}
 }

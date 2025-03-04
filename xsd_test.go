@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	"github.com/killi1812/libxml2"
+	"github.com/killi1812/libxml2/types"
 	"github.com/killi1812/libxml2/xsd"
 	"github.com/stretchr/testify/assert"
 )
@@ -44,15 +45,15 @@ func TestXSD(t *testing.T) {
 			return
 		}
 
-		serr, ok := err.(xsd.SchemaValidationError)
+		serr, ok := err.(types.SchemaValidationError)
 		if !assert.True(t, ok, "error is xsd.SchemaValidationErr") {
 			return
 		}
 
-		if !assert.Len(t, serr.Errors(), 1, "there's one error") {
+		if !assert.Len(t, serr.Errors, 1, "there's one error") {
 			return
 		}
-		for _, e := range serr.Errors() {
+		for _, e := range serr.Errors {
 			t.Logf("err (OK): '%s'", e)
 		}
 	}()
@@ -107,8 +108,8 @@ BrIVC58W3ydbkK+Ri4OKbaRZlYeRA==
 
 		err = s.Validate(d)
 		if !assert.NoError(t, err, "s.Validate should pass") {
-			if serr, ok := err.(xsd.SchemaValidationError); ok {
-				for _, e := range serr.Errors() {
+			if serr, ok := err.(types.SchemaValidationError); ok {
+				for _, e := range serr.Errors {
 					t.Logf("err: %s", e)
 				}
 			}
