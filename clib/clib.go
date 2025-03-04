@@ -2290,7 +2290,7 @@ func XMLRelaxNGSchemaParseFromFile(path string) (uintptr, error) {
 	return uintptr(unsafe.Pointer(s)), nil
 }
 
-func XMLRelaxNGValidateDocument(schema PtrSource, document PtrSource, options ...int) []error {
+func XMLRelaxNGValidateDocument(schema PtrSource, document PtrSource, _ ...int) []error {
 	sptr, err := validRelaxNGPtr(schema)
 	if err != nil {
 		return []error{err}

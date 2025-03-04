@@ -27,7 +27,7 @@ const ValueVCCreate = 1
 // Schema instance. Make sure to call Free() on the instance
 // when you are done with it.
 // ==IMPORTANT== still in development
-// TODO: finish transfering to relaxNG
+// TODO: finish transferring to relaxNG
 func Parse(buf []byte, options ...types.Option) (types.Schema, error) {
 	sptr, err := clib.XMLSchemaParse(buf, options...)
 	if err != nil {
