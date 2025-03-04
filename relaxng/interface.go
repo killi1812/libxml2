@@ -1,6 +1,6 @@
 package relaxng
 
-import "github.com/lestrrat-go/libxml2/internal/option"
+import "github.com/killi1812/libxml2/internal/option"
 
 // RelaxNGSchema represents an XML schema.
 type RelaxNGSchema struct {

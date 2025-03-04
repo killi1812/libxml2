@@ -352,8 +352,8 @@ import (
 	"unicode/utf8"
 	"unsafe"
 
-	"github.com/lestrrat-go/libxml2/internal/debug"
-	"github.com/lestrrat-go/libxml2/internal/option"
+	"github.com/killi1812/libxml2/internal/debug"
+	"github.com/killi1812/libxml2/internal/option"
 	"github.com/pkg/errors"
 )
 

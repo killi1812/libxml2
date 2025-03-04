@@ -5,10 +5,10 @@ import (
 	"os"
 	"testing"
 
-	"github.com/lestrrat-go/libxml2/dom"
-	"github.com/lestrrat-go/libxml2/parser"
-	"github.com/lestrrat-go/libxml2/types"
-	"github.com/lestrrat-go/libxml2/xpath"
+	"github.com/killi1812/libxml2/dom"
+	"github.com/killi1812/libxml2/parser"
+	"github.com/killi1812/libxml2/types"
+	"github.com/killi1812/libxml2/xpath"
 	"github.com/stretchr/testify/assert"
 )
 

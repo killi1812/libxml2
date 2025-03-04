@@ -1,15 +1,18 @@
 # libxml2
 
 
+**NOTICE**: I have forked this for my class project and added a functionalities for verifying RelaxNG xml schemas see [original repo](https://github.com/lestrrat-go/libxml2)
+
+
 **NOTICE**: Instead of making people use this library while wondering if this module is ever going to be modified any time soon, I've opted to archive it. I may come back to it later, but for the time being I have no motivation or pressing need to work on this project.
 
 
 
 Interface to libxml2, with DOM interface.
 
-[![Build Status](https://travis-ci.org/lestrrat-go/libxml2.svg?branch=master)](https://travis-ci.org/lestrrat-go/libxml2)
+[![Build Status](https://travis-ci.org/killi1812/libxml2.svg?branch=master)](https://travis-ci.org/killi1812/libxml2)
 
-[![GoDoc](https://godoc.org/github.com/lestrrat-go/libxml2?status.svg)](https://godoc.org/github.com/lestrrat-go/libxml2)
+[![GoDoc](https://godoc.org/github.com/killi1812/libxml2?status.svg)](https://godoc.org/github.com/killi1812/libxml2)
 
 # Index
 
@@ -77,10 +80,10 @@ import (
   "log"
   "net/http"
 
-  "github.com/lestrrat-go/libxml2"
-  "github.com/lestrrat-go/libxml2/parser"
-  "github.com/lestrrat-go/libxml2/types"
-  "github.com/lestrrat-go/libxml2/xpath"
+  "github.com/killi1812/libxml2"
+  "github.com/killi1812/libxml2/parser"
+  "github.com/killi1812/libxml2/types"
+  "github.com/killi1812/libxml2/xpath"
 )
 
 func ExampleXML() {
@@ -158,8 +161,8 @@ import (
   "os"
   "path/filepath"
 
-  "github.com/lestrrat-go/libxml2"
-  "github.com/lestrrat-go/libxml2/xsd"
+  "github.com/killi1812/libxml2"
+  "github.com/killi1812/libxml2/xsd"
 )
 
 func ExampleXSD() {
@@ -217,7 +220,7 @@ BenchmarkXmlpathXmlpath-4     500000         11737 ns/op         721 B/op       
 BenchmarkLibxml2Xmlpath-4    1000000          7627 ns/op         368 B/op         15 allocs/op
 BenchmarkEncodingXMLDOM-4    2000000          4079 ns/op        4560 B/op          9 allocs/op
 BenchmarkLibxml2DOM-4        1000000         11454 ns/op         264 B/op          7 allocs/op
-ok      github.com/lestrrat-go/libxml2  37.597s
+ok      github.com/killi1812/libxml2  37.597s
 ```
 
 ## FAQ
@@ -293,7 +296,7 @@ go build -tags static_build
 
 ## See Also
 
-* https://github.com/lestrrat-go/xmlsec
+* https://github.com/killi1812/xmlsec
 
 ## Credits
 

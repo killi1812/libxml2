@@ -8,8 +8,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/lestrrat-go/libxml2"
-	"github.com/lestrrat-go/libxml2/xsd"
+	"github.com/killi1812/libxml2"
+	"github.com/killi1812/libxml2/xsd"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -205,7 +205,7 @@ func TestGHIssue67(t *testing.T) {
 		srv := httptest.NewServer(http.FileServer(http.Dir(curdir)))
 		defer srv.Close()
 
-		var schemafile = srv.URL + "/test/schema/projects/go_libxml2_remote.xsd"
+		schemafile := srv.URL + "/test/schema/projects/go_libxml2_remote.xsd"
 		const docfile = "test/go_libxml2_remote.xml"
 
 		//nolint:noctx

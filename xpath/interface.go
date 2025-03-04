@@ -1,8 +1,8 @@
 package xpath
 
 import (
-	"github.com/lestrrat-go/libxml2/clib"
-	"github.com/lestrrat-go/libxml2/types"
+	"github.com/killi1812/libxml2/clib"
+	"github.com/killi1812/libxml2/types"
 )
 
 const (

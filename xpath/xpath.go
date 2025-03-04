@@ -6,8 +6,8 @@ github.com/lestrrat/libxml2/dom package, you MUST import both
 packages to properly use it.
 
 	import (
-		"github.com/lestrrat-go/libxml2/dom"
-		"github.com/lestrrat-go/libxml2/xpath"
+		"github.com/killi1812/libxml2/dom"
+		"github.com/killi1812/libxml2/xpath"
 	)
 
 Or, if you have no use for dom package in your program, and you
@@ -23,8 +23,8 @@ package xpath
 import (
 	"fmt"
 
-	"github.com/lestrrat-go/libxml2/clib"
-	"github.com/lestrrat-go/libxml2/types"
+	"github.com/killi1812/libxml2/clib"
+	"github.com/killi1812/libxml2/types"
 	"github.com/pkg/errors"
 )
 
@@ -51,7 +51,7 @@ func (x Object) Bool() bool {
 // WrapNodeFunc is a function that gets called when Object.NodeList()
 // is called. This is necessary because during the call to NodeList(),
 // the underlying C pointers are materialized to objects in a different
-// package ("github.com/lestrrat-go/libxml2/dom"), and said package
+// package ("github.com/killi1812/libxml2/dom"), and said package
 // uses this package... Yes, a circular dependency.
 //
 // Normally this means that both pacckages should live under the same
@@ -59,7 +59,7 @@ func (x Object) Bool() bool {
 // we have decided they warrant to be separated.
 //
 // So this WrapNodeFunc is our workaround for this problem: when
-// github.com/lestrrat-go/libxml2/dom is loaded, it automatically
+// github.com/killi1812/libxml2/dom is loaded, it automatically
 // initializes this function to an appropriate function on the fly.
 var WrapNodeFunc func(uintptr) (types.Node, error)
 
