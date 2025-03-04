@@ -35,6 +35,7 @@ package clib
 #include <libxml/c14n.h>
 #include <libxml/xmlschemas.h>
 #include <libxml/schemasInternals.h>
+#include <libxml/relaxng.h>
 
 static inline void MY_nilErrorHandler(void *ctx, const char *msg, ...) {}
 
@@ -331,8 +332,19 @@ void
 MY_setErrWarnAccumulator(xmlSchemaValidCtxtPtr ctxt, go_libxml2_errwarn_accumulator *accum) {
 	xmlSchemaSetValidErrors(ctxt, MY_accumulateErr, NULL, accum);
 }
+
+
+// RelaxNG functions
+
+static
+void
+MY_setErrWarnAccumulatorRelaxNG(xmlRelaxNGValidCtxtPtr ctxt, go_libxml2_errwarn_accumulator *accum) {
+	xmlRelaxNGSetValidErrors(ctxt, MY_accumulateErr, NULL, accum);
+}
+
 */
 import "C"
+
 import (
 	"fmt"
 	"strings"
@@ -2253,4 +2265,82 @@ func XMLCtxtReadMemory(ctx PtrSource, file string, baseURL string, encoding stri
 		return 0, errors.Errorf("failed to read document from memory: %v", xmlCtxtLastError(ctx))
 	}
 	return uintptr(unsafe.Pointer(doc)), nil
+}
+
+/*
+************************************************
+*                                              *
+*          RelaxNG validator functions         *
+*                                              *
+************************************************
+ */
+
+func XMLRelaxNGSchemaParseFromFile(path string) (uintptr, error) {
+	parserCtx := C.xmlRelaxNGNewParserCtxt(C.CString(path))
+	if parserCtx == nil {
+		return 0, errors.New("failed to create parser")
+	}
+	defer C.xmlRelaxNGFreeParserCtxt(parserCtx)
+
+	s := C.xmlRelaxNGParse(parserCtx)
+	if s == nil {
+		return 0, errors.New("failed to parse schema")
+	}
+
+	return uintptr(unsafe.Pointer(s)), nil
+}
+
+func XMLRelaxNGValidateDocument(schema PtrSource, document PtrSource, options ...int) []error {
+	sptr, err := validRelaxNGPtr(schema)
+	if err != nil {
+		return []error{err}
+	}
+
+	dptr, err := validDocumentPtr(document)
+	if err != nil {
+		return []error{err}
+	}
+
+	ctx := C.xmlRelaxNGNewValidCtxt(sptr)
+	if ctx == nil {
+		return []error{errors.New("failed to build validator")}
+	}
+	defer C.xmlRelaxNGFreeValidCtxt(ctx)
+
+	accum := C.MY_createErrWarnAccumulator()
+	defer C.MY_freeErrWarnAccumulator(accum)
+
+	C.MY_setErrWarnAccumulatorRelaxNG(ctx, accum)
+
+	if C.xmlRelaxNGValidateDoc(ctx, dptr) == 0 {
+		return nil
+	}
+
+	errs := make([]error, accum.erridx)
+	for i := 0; i < int(accum.erridx); i++ {
+		errs[i] = errors.New(C.GoString(accum.errors[i]))
+	}
+	return errs
+}
+
+func validRelaxNGPtr(schema PtrSource) (*C.xmlRelaxNG, error) {
+	if schema == nil {
+		return nil, ErrInvalidSchema
+	}
+	sptr := schema.Pointer()
+	if sptr == 0 {
+		return nil, ErrInvalidSchema
+	}
+
+	return (*C.xmlRelaxNG)(unsafe.Pointer(sptr)), nil
+}
+
+func XMLRelaxNGFree(s PtrSource) error {
+	sptr, err := validRelaxNGPtr(s)
+	if err != nil {
+		return err
+	}
+
+	C.xmlRelaxNGFree(sptr)
+	return nil
 }
