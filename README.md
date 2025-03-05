@@ -1,8 +1,9 @@
 # libxml2
 
 
-**NOTICE**: I have forked this for my class project and added a functionalities for verifying RelaxNG xml schemas see [original repo](https://github.com/lestrrat-go/libxml2)
+**IMPORTANT**: I have forked this for my class project and added a functionalitie for verifying RelaxNG xml schemas see [original repo](https://github.com/lestrrat-go/libxml2)
 
+##
 
 **NOTICE**: Instead of making people use this library while wondering if this module is ever going to be modified any time soon, I've opted to archive it. I may come back to it later, but for the time being I have no motivation or pressing need to work on this project.
 
