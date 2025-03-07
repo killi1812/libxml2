@@ -39,6 +39,7 @@ I needed to write [go-xmlsec](https://github.com/lestrrat-go/xmlsec). This means
 | dom     | DOM-like manipulation of XML document/nodes                 |
 | xpath   | XPath related tools                                         |
 | xsd     | XML Schema related tools                                    |
+| relaxng | XML RelaxNG related tools                                   |
 | clib    | Wrapper around C libxml2 library - DO NOT TOUCH IF UNSURE   |
 
 ## Features
